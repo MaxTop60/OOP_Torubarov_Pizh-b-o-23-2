@@ -1,4 +1,7 @@
-class Bus_Prototype:
+from abc import abstractmethod, ABC
+
+
+class Bus_Prototype(ABC):
     """
     Класс Bus_Prototype представляет прототип автобуса с определенными местами.
     """
@@ -21,6 +24,10 @@ class Bus_Prototype:
         self._capacity: int = capacity
         self._max_speed: int = max_speed
         self._passengers = passengers
+
+    @abstractmethod
+    def boarding(self, *passengers: str):
+        pass
 
 
 class Bus(Bus_Prototype):
@@ -49,7 +56,7 @@ class Bus(Bus_Prototype):
             self._seats[f"seat_{self._numb_of_seat}"] = i
             self._numb_of_seat += 1
 
-    def boarding(self, *passengers):
+    def boarding(self, *passengers: str):
         """
         Метод boarding добавляет пассажиров в автобус.
 
@@ -58,21 +65,19 @@ class Bus(Bus_Prototype):
         new_pass = list(passengers)
 
         for i in new_pass:
-            if self._hasEmptySeats:
-                if len(self._passengers) < self._capacity:
-                    self._passengers.append(i)
+            if len(self._passengers) < self._capacity:
+                self._passengers.append(i)
 
-                    for key in self._seats:
-                        if self._seats[key] is None:
-                            self._seats[key] = i
-                            break
+                for key in self._seats:
+                    if self._seats[key] is None:
+                        self._seats[key] = i
+                        break
 
-                    print(f"Зашёл пассажир {i}.")
+                print(f"Зашёл пассажир {i}.")
 
-                else:
-                    self._hasEmptySeats = False
-                    print("Свободных мест не осталось.")
             else:
+                self._hasEmptySeats = False
+                print("Свободных мест не осталось.")
                 break
 
     def getting(self, *passengers):
@@ -121,4 +126,14 @@ class Bus(Bus_Prototype):
         return self._hasEmptySeats
 
     def get_seats(self):
+        print(self._seats)
         return self._seats
+
+    def __str__(self):
+        return (
+            f"Скорость автобуса: {self._speed} км/час\n"
+            f"Максимальная скорость автобуса: {self._max_speed} км/час\n"
+            f"Колличество свободных мест: "
+            f"{len(self._passengers) - self._capacity}\n"
+            f"Колличество пассажиров: {len(self._passengers)}"
+        )

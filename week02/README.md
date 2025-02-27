@@ -16,7 +16,10 @@
 
 ```PYTHON
 #main.py
-class Bus_Prototype:
+from abc import abstractmethod, ABC
+
+
+class Bus_Prototype(ABC):
     """
     Класс Bus_Prototype представляет прототип автобуса с определенными местами.
     """
@@ -39,6 +42,10 @@ class Bus_Prototype:
         self._capacity: int = capacity
         self._max_speed: int = max_speed
         self._passengers = passengers
+
+    @abstractmethod
+    def boarding(self, *passengers: str):
+        pass
 
 
 class Bus(Bus_Prototype):
@@ -67,7 +74,7 @@ class Bus(Bus_Prototype):
             self._seats[f"seat_{self._numb_of_seat}"] = i
             self._numb_of_seat += 1
 
-    def boarding(self, *passengers):
+    def boarding(self, *passengers: str):
         """
         Метод boarding добавляет пассажиров в автобус.
 
@@ -76,21 +83,19 @@ class Bus(Bus_Prototype):
         new_pass = list(passengers)
 
         for i in new_pass:
-            if self._hasEmptySeats:
-                if len(self._passengers) < self._capacity:
-                    self._passengers.append(i)
+            if len(self._passengers) < self._capacity:
+                self._passengers.append(i)
 
-                    for key in self._seats:
-                        if self._seats[key] is None:
-                            self._seats[key] = i
-                            break
+                for key in self._seats:
+                    if self._seats[key] is None:
+                        self._seats[key] = i
+                        break
 
-                    print(f"Зашёл пассажир {i}.")
+                print(f"Зашёл пассажир {i}.")
 
-                else:
-                    self._hasEmptySeats = False
-                    print("Свободных мест не осталось.")
             else:
+                self._hasEmptySeats = False
+                print("Свободных мест не осталось.")
                 break
 
     def getting(self, *passengers):
@@ -139,7 +144,17 @@ class Bus(Bus_Prototype):
         return self._hasEmptySeats
 
     def get_seats(self):
-        return self._seats 
+        print(self._seats)
+        return self._seats
+
+    def __str__(self):
+        return (
+            f"Скорость автобуса: {self._speed} км/час\n"
+            f"Максимальная скорость автобуса: {self._max_speed} км/час\n"
+            f"Колличество свободных мест: "
+            f"{len(self._passengers) - self._capacity}\n"
+            f"Колличество пассажиров: {len(self._passengers)}"
+        )
 ```
 
 ``` PYTHON
@@ -147,33 +162,90 @@ class Bus(Bus_Prototype):
 from main import Bus
 
 
-def test_bus_initialization():
-    bus = Bus(10, 20, 30, ["passenger1", "passenger2"])
-    assert bus.get_speed() == 10
-    assert bus.get_capacity() == 20
-    assert bus.get_max_speed() == 30
-    assert bus.get_passengers() == ["passenger1", "passenger2"]
-    assert bus.get_has_empty_seats() is True
-
-
 def test_boarding():
-    bus = Bus(10, 20, 30, ["passenger1", "passenger2"])
-    bus.boarding("passenger3")
-    assert bus.get_passengers() == ["passenger1", "passenger2", "passenger3"]
-    assert bus.get_seats()["seat_3"] == "passenger3"
+    bus = Bus(60, 10, 120, [])
+    bus.boarding("passenger1", "passenger2")
+    assert bus.get_passengers() == ["passenger1", "passenger2"]
+    assert bus.get_seats() == {
+        "seat_1": "passenger1",
+        "seat_2": "passenger2",
+        "seat_3": None,
+        "seat_4": None,
+        "seat_5": None,
+        "seat_6": None,
+        "seat_7": None,
+        "seat_8": None,
+        "seat_9": None,
+    }
 
 
 def test_getting():
-    bus = Bus(10, 20, 30, ["passenger1", "passenger2"])
+    bus = Bus(60, 10, 120, ["passenger1", "passenger2"])
     bus.getting("passenger1")
     assert bus.get_passengers() == ["passenger2"]
-    assert bus.get_seats()["seat_1"] is None
+    assert bus.get_seats() == {
+        "seat_1": None,
+        "seat_2": "passenger2",
+        "seat_3": None,
+        "seat_4": None,
+        "seat_5": None,
+        "seat_6": None,
+        "seat_7": None,
+        "seat_8": None,
+        "seat_9": None,
+    }
 
 
 def test_change_speed():
-    bus = Bus(10, 20, 30, ["passenger1", "passenger2"])
-    bus.change_speed(25)
-    assert bus.get_speed() == 25
+    bus = Bus(60, 10, 120, [])
+    bus.change_speed(80)
+    assert bus.get_speed() == 80
+
+
+def test_get_speed():
+    bus = Bus(60, 10, 120, [])
+    assert bus.get_speed() == 60
+
+
+def test_get_capacity():
+    bus = Bus(60, 10, 120, [])
+    assert bus.get_capacity() == 10
+
+
+def test_get_max_speed():
+    bus = Bus(60, 10, 120, [])
+    assert bus.get_max_speed() == 120
+
+
+def test_get_passengers():
+    bus = Bus(60, 10, 120, ["passenger1", "passenger2"])
+    assert bus.get_passengers() == ["passenger1", "passenger2"]
+
+
+def test_get_has_empty_seats():
+    bus = Bus(60, 10, 120, ["passenger1", "passenger2"])
+    assert bus.get_has_empty_seats() is True
+
+
+def test_get_seats():
+    bus = Bus(60, 10, 120, ["passenger1", "passenger2"])
+    assert bus.get_seats() == {
+        "seat_1": "passenger1",
+        "seat_2": "passenger2",
+        "seat_3": None,
+        "seat_4": None,
+        "seat_5": None,
+        "seat_6": None,
+        "seat_7": None,
+        "seat_8": None,
+        "seat_9": None,
+    }
+
+
+def test_str():
+    bus = Bus(60, 10, 120, ["passenger1", "passenger2"])
+    print(bus)
+
 
 ```
 При выполнении задания необходимо пострить UML-диграмма классов приложения.
