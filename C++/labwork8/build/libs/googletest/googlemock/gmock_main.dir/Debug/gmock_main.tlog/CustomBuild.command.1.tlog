@@ -1,0 +1,10 @@
+^D:\UNIVERSITY\DEV\C++\LABWORK8\LIBS\GOOGLETEST\GOOGLEMOCK\CMAKELISTS.TXT
+setlocal
+D:\VisualStudio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -SD:/University/Dev/C++/labwork8 -BD:/University/Dev/C++/labwork8/build --check-stamp-file D:/University/Dev/C++/labwork8/build/libs/googletest/googlemock/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

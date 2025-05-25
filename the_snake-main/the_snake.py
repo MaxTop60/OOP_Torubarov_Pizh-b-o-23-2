@@ -1,4 +1,4 @@
-from random import choice, randint
+from random import randint
 
 import pygame
 
@@ -40,9 +40,7 @@ clock = pygame.time.Clock()
 
 
 class GameObject:
-    """
-    Базовый класс для игровых объектов.
-    """
+    """Базовый класс для игровых объектов."""
 
     def __init__(self, body_color):
         self.body_color = body_color
@@ -53,9 +51,7 @@ class GameObject:
 
 
 class Apple(GameObject):
-    """
-    Класс для яблока.
-    """
+    """Класс для яблока."""
 
     def __init__(self):
         super().__init__(APPLE_COLOR)
@@ -76,9 +72,7 @@ class Apple(GameObject):
 
 
 class Snake(GameObject):
-    """
-    Класс для змейки.
-    """
+    """Класс для змейки."""
 
     def __init__(self):
         super().__init__(SNAKE_COLOR)
@@ -129,6 +123,8 @@ class Snake(GameObject):
 
 
 def main():
+    """Основная функция игры."""
+
     # Инициализация PyGame:
     pygame.init()
     # Тут нужно создать экземпляры классов.

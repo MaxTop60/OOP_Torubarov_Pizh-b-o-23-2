@@ -1,0 +1,10 @@
+^D:\UNIVERSITY\DEV\C++\LABWORK8\BUILD\CMAKEFILES\1BCAD93E57558EB6A908411F9492F9CE\GENERATE.STAMP.RULE
+setlocal
+D:\VisualStudio\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -SD:/University/Dev/C++/labwork8 -BD:/University/Dev/C++/labwork8/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/University/Dev/C++/labwork8/build/BSTProject.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
